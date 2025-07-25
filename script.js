@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     let currentStep = 0;
     const totalSteps = 9; // 0-8
+    let templateSelected = false;
     
     const nextBtn = document.getElementById('nextBtn');
     const prevBtn = document.getElementById('prevBtn');
@@ -103,19 +104,35 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Initialize
+    loadFromLocalStorage();
     updateProgressBar();
     updateStepIndicators();
     updateNavigation();
+    
+    // Add click handlers for step indicators
+    document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            // Only allow navigation to completed steps or next step
+            if (index <= currentStep || (index === currentStep + 1 && canMoveToStep(index))) {
+                goToStep(index);
+            }
+        });
+    });
 
     // Template selection
     document.querySelectorAll('.template-card').forEach(card => {
         card.addEventListener('click', function() {
             const templateName = this.dataset.template;
             loadTemplate(templateName);
+            templateSelected = true;
             
             // Visual feedback
             document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
             this.classList.add('selected');
+            
+            // Save selection to localStorage
+            localStorage.setItem('veo3_selectedTemplate', templateName);
+            saveToLocalStorage();
             
             // Move to next step after template selection
             setTimeout(() => {
@@ -128,6 +145,16 @@ document.addEventListener('DOMContentLoaded', function() {
     nextBtn.addEventListener('click', nextStep);
     prevBtn.addEventListener('click', prevStep);
     generateBtn.addEventListener('click', generateResults);
+    
+    // Reset button
+    const resetBtn = document.getElementById('resetBtn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            if (confirm('Czy na pewno chcesz zacząć od nowa? Wszystkie wprowadzone dane zostaną utracone.')) {
+                resetForm();
+            }
+        });
+    }
 
     // Copy functionality
     if (copyJsonBtn) copyJsonBtn.addEventListener('click', () => copyResults('json'));
@@ -148,44 +175,55 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function nextStep() {
         if (currentStep < totalSteps - 1) {
-            // Validate current step if not template selection
-            if (currentStep > 0 && !validateCurrentStep()) {
+            // Validate current step
+            if (!canMoveToStep(currentStep + 1)) {
                 return;
             }
             
-            // Hide current step
-            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
-            
-            // Show next step
-            currentStep++;
-            document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-            
-            // Update UI
-            updateProgressBar();
-            updateStepIndicators();
-            updateNavigation();
-            
-            // Scroll to top
-            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+            goToStep(currentStep + 1);
         }
+    }
+    
+    function canMoveToStep(stepIndex) {
+        // Step 0: Template selection - check if template is selected
+        if (currentStep === 0 && stepIndex > 0) {
+            if (!templateSelected) {
+                alert('Proszę wybrać template lub pusty szablon.');
+                return false;
+            }
+        }
+        
+        // Other steps: validate required fields
+        if (currentStep > 0 && stepIndex > currentStep) {
+            return validateCurrentStep();
+        }
+        
+        return true;
+    }
+    
+    function goToStep(stepIndex) {
+        // Hide current step
+        document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
+        
+        // Show target step
+        currentStep = stepIndex;
+        document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+        
+        // Update UI
+        updateProgressBar();
+        updateStepIndicators();
+        updateNavigation();
+        
+        // Save progress
+        saveToLocalStorage();
+        
+        // Scroll to top
+        document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
     }
 
     function prevStep() {
         if (currentStep > 0) {
-            // Hide current step
-            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
-            
-            // Show previous step
-            currentStep--;
-            document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-            
-            // Update UI
-            updateProgressBar();
-            updateStepIndicators();
-            updateNavigation();
-            
-            // Scroll to top
-            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+            goToStep(currentStep - 1);
         }
     }
 
@@ -196,13 +234,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateStepIndicators() {
         document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
-            indicator.classList.remove('active', 'completed');
+            indicator.classList.remove('active', 'completed', 'clickable');
             
             if (index === currentStep) {
                 indicator.classList.add('active');
             } else if (index < currentStep) {
-                indicator.classList.add('completed');
+                indicator.classList.add('completed', 'clickable');
+            } else if (index === currentStep + 1 && (templateSelected || currentStep > 0)) {
+                indicator.classList.add('clickable');
             }
+            
+            // Update cursor style
+            indicator.style.cursor = indicator.classList.contains('clickable') || index <= currentStep ? 'pointer' : 'default';
         });
     }
 
@@ -497,4 +540,120 @@ What would be your improved, ready-to-use prompt?`;
             button.style.backgroundColor = '';
         }, 2000);
     }
+    
+    // LocalStorage functions
+    function saveToLocalStorage() {
+        const formData = {
+            currentStep: currentStep,
+            templateSelected: templateSelected,
+            selectedTemplate: localStorage.getItem('veo3_selectedTemplate'),
+            formFields: {}
+        };
+        
+        // Save all form field values
+        const fields = ['idea', 'duration', 'aspect_ratio', 'character_name', 'character_age', 
+                       'character_height', 'character_build', 'character_skin', 'character_hair', 
+                       'character_eyes', 'character_marks', 'character_outfit', 'character_demeanour',
+                       'location', 'time_of_day', 'environment', 'action', 'props', 
+                       'composition', 'camera_motion', 'camera_equipment', 'lighting', 
+                       'tone', 'color_grade', 'dialogue', 'voice_emotion', 'audio_style'];
+        
+        fields.forEach(fieldId => {
+            const element = document.getElementById(fieldId);
+            if (element) {
+                formData.formFields[fieldId] = element.value;
+            }
+        });
+        
+        localStorage.setItem('veo3_builder_state', JSON.stringify(formData));
+    }
+    
+    function loadFromLocalStorage() {
+        const savedState = localStorage.getItem('veo3_builder_state');
+        if (savedState) {
+            try {
+                const data = JSON.parse(savedState);
+                currentStep = data.currentStep || 0;
+                templateSelected = data.templateSelected || false;
+                
+                // Restore form field values
+                if (data.formFields) {
+                    Object.keys(data.formFields).forEach(fieldId => {
+                        const element = document.getElementById(fieldId);
+                        if (element && data.formFields[fieldId]) {
+                            element.value = data.formFields[fieldId];
+                        }
+                    });
+                }
+                
+                // Restore selected template visual state
+                if (data.selectedTemplate) {
+                    const templateCard = document.querySelector(`[data-template="${data.selectedTemplate}"]`);
+                    if (templateCard) {
+                        document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+                        templateCard.classList.add('selected');
+                    }
+                }
+                
+                // Show the correct step
+                document.querySelectorAll('.step-content').forEach(step => step.classList.remove('active'));
+                const currentStepElement = document.querySelector(`[data-step="${currentStep}"]`);
+                if (currentStepElement) {
+                    currentStepElement.classList.add('active');
+                }
+                
+            } catch (e) {
+                console.error('Error loading saved state:', e);
+                resetForm();
+            }
+        }
+    }
+    
+    function resetForm() {
+        currentStep = 0;
+        templateSelected = false;
+        
+        // Clear localStorage
+        localStorage.removeItem('veo3_builder_state');
+        localStorage.removeItem('veo3_selectedTemplate');
+        
+        // Reset all form fields
+        document.querySelectorAll('input, select, textarea').forEach(field => {
+            field.value = '';
+        });
+        
+        // Reset dropdowns to first option
+        document.querySelectorAll('select').forEach(select => {
+            if (select.options.length > 0) {
+                select.selectedIndex = 0;
+            }
+        });
+        
+        // Reset duration to 8
+        const durationField = document.getElementById('duration');
+        if (durationField) durationField.value = '8';
+        
+        // Reset aspect ratio to 16:9
+        const aspectField = document.getElementById('aspect_ratio');
+        if (aspectField) aspectField.value = '16:9';
+        
+        // Clear template selection
+        document.querySelectorAll('.template-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        
+        // Reset to first step
+        document.querySelectorAll('.step-content').forEach(step => step.classList.remove('active'));
+        document.querySelector('[data-step="0"]').classList.add('active');
+        
+        // Update UI
+        updateProgressBar();
+        updateStepIndicators();
+        updateNavigation();
+    }
+    
+    // Auto-save on form field changes
+    document.addEventListener('input', saveToLocalStorage);
+    document.addEventListener('change', saveToLocalStorage);
+    
 });

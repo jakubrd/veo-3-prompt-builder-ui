@@ -24,6 +24,7 @@ header {
     text-align: center;
     margin-bottom: 40px;
     color: white;
+    position: relative;
 }
 
 header h1 {
@@ -35,6 +36,36 @@ header h1 {
 header p {
     font-size: 1.2rem;
     opacity: 0.9;
+    margin-bottom: 20px;
+}
+
+.btn-reset {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(10px);
+}
+
+.btn-reset:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+.btn-reset i {
+    font-size: 0.8rem;
 }
 
 /* Progress Bar */
@@ -110,6 +141,16 @@ header p {
 .step-indicator.completed i {
     background: #48bb78;
     color: white;
+}
+
+.step-indicator.clickable:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.step-indicator.clickable:hover i {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .step-indicator span {
@@ -653,6 +694,13 @@ footer {
         width: 25px;
         height: 25px;
         font-size: 0.8rem;
+    }
+    
+    .btn-reset {
+        position: static;
+        margin: 10px auto 0;
+        font-size: 0.8rem;
+        padding: 6px 12px;
     }
 }
 
