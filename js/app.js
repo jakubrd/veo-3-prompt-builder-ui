@@ -163,9 +163,6 @@ const App = {
         
         // Save progress
         this.saveToStorage();
-        
-        // Scroll to top
-        document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
     },
 
     showStep: function(stepIndex) {
