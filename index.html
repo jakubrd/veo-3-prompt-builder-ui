@@ -12,9 +12,6 @@
         <header>
             <h1><i class="fas fa-video"></i> Veo 3 Prompt Builder</h1>
             <p>Stwórz szczegółowy prompt do generowania wideo AI</p>
-            <button id="resetBtn" class="btn-reset">
-                <i class="fas fa-redo"></i> Zacznij od nowa
-            </button>
         </header>
 
         <!-- Progress Bar -->
@@ -139,17 +136,15 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="duration">⏱️ Długość (sekundy)</label>
-                        <input type="number" id="duration" min="1" max="8" value="8" required>
+                        <input type="number" id="duration" min="1" max="8" value="8" readonly required>
+                        <small>Zablokowane na 8 sekund (maksimum dla Veo 3)</small>
                     </div>
                     <div class="form-group">
                         <label for="aspect_ratio">📐 Proporcje</label>
-                        <select id="aspect_ratio" required>
-                            <option value="16:9">16:9 (standardowe)</option>
-                            <option value="9:16">9:16 (pionowe/mobile)</option>
-                            <option value="2.35:1">2.35:1 (kinowe)</option>
-                            <option value="4:3">4:3 (klasyczne)</option>
-                            <option value="1:1">1:1 (kwadratowe)</option>
+                        <select id="aspect_ratio" disabled required>
+                            <option value="16:9" selected>16:9 (standardowe)</option>
                         </select>
+                        <small>Zablokowane na 16:9 (optymalne dla Veo 3)</small>
                     </div>
                 </div>
             </div>
@@ -420,12 +415,13 @@
                 <button type="button" id="prevBtn" class="btn-nav btn-secondary" style="display: none;">
                     <i class="fas fa-chevron-left"></i> Poprzedni
                 </button>
+                <button type="button" id="resetBtn" class="btn-nav btn-reset">
+                    <i class="fas fa-redo"></i> Zacznij od nowa
+                </button>
                 <button type="button" id="nextBtn" class="btn-nav btn-primary">
                     Następny <i class="fas fa-chevron-right"></i>
                 </button>
-                <button type="button" id="generateBtn" class="btn-nav btn-success" style="display: none;">
-                    <i class="fas fa-magic"></i> Generuj Prompt
-                </button>
+
             </div>
         </div>
 
@@ -435,17 +431,24 @@
             <ol>
                 <li><strong>Wybierz template</strong> - Użyj gotowego wzorca lub zacznij od zera</li>
                 <li><strong>Wypełnij formularz</strong> - Przejdź przez wszystkie kroki</li>
-                <li><strong>Wygeneruj wyniki</strong> - System utworzy 3 typy promptów</li>
+                <li><strong>Zobacz wyniki</strong> - System automatycznie utworzy 3 typy promptów</li>
                 <li><strong>Skopiuj i ulepsz</strong> - Użyj ChatGPT/Claude do ulepszenia</li>
-                <li><strong>Użyj w Veo 3</strong> - Wklej finalny prompt w Google AI Studio</li>
+                <li><strong>Użyj w Veo 3</strong> - Wklej w flow.google/Gemini w wersji Pro/Ultra lub Google AI Studio</li>
             </ol>
         </div>
     </div>
 
     <footer>
         <p>🎬 Veo 3 Prompt Builder | Stworzony dla twórców wideo AI</p>
+        <p>🙏 Oparty na <a href="https://github.com/philschmid/gemini-samples/blob/main/scripts/gemini-veo-meta.py" target="_blank" rel="noopener">gemini-veo-meta.py</a> autorstwa <strong>@philschmid</strong></p>
     </footer>
 
-    <script src="script.js"></script>
+
+    <!-- JavaScript Modules -->
+    <script src="js/templates.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/forms.js"></script>
+    <script src="js/generators.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

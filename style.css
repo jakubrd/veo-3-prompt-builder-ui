@@ -24,7 +24,6 @@ header {
     text-align: center;
     margin-bottom: 40px;
     color: white;
-    position: relative;
 }
 
 header h1 {
@@ -36,36 +35,6 @@ header h1 {
 header p {
     font-size: 1.2rem;
     opacity: 0.9;
-    margin-bottom: 20px;
-}
-
-.btn-reset {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    padding: 8px 15px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    backdrop-filter: blur(10px);
-}
-
-.btn-reset:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-1px);
-}
-
-.btn-reset i {
-    font-size: 0.8rem;
 }
 
 /* Progress Bar */
@@ -176,6 +145,11 @@ header p {
 
 .step-content.active {
     display: block;
+}
+
+/* Force visibility for steps that should be shown */
+.step-content[data-force-visible="true"] {
+    display: block !important;
 }
 
 .step-header {
@@ -374,8 +348,9 @@ header p {
 /* Step Navigation */
 .step-navigation {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 15px;
     margin-top: 40px;
     padding-top: 30px;
     border-top: 2px solid #f0f0f0;
@@ -425,6 +400,17 @@ header p {
 .btn-success:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+}
+
+.btn-reset {
+    background: #e53e3e;
+    color: white;
+}
+
+.btn-reset:hover {
+    background: #c53030;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(229, 62, 62, 0.3);
 }
 
 /* Buttons */
@@ -695,13 +681,6 @@ footer {
         height: 25px;
         font-size: 0.8rem;
     }
-    
-    .btn-reset {
-        position: static;
-        margin: 10px auto 0;
-        font-size: 0.8rem;
-        padding: 6px 12px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -805,4 +784,27 @@ footer {
 .btn-primary:disabled:hover {
     transform: none;
     box-shadow: none;
+}
+
+/* Locked Form Fields */
+.form-group input[readonly],
+.form-group select[disabled] {
+    background-color: #f7fafc;
+    color: #4a5568;
+    cursor: not-allowed;
+    border-color: #e2e8f0;
+    opacity: 0.8;
+}
+
+.form-group input[readonly]:focus,
+.form-group select[disabled]:focus {
+    border-color: #e2e8f0;
+    box-shadow: none;
+}
+
+.form-group small {
+    color: #718096;
+    font-style: italic;
+    margin-top: 5px;
+    display: block;
 }
