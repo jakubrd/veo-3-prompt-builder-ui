@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Veo 3 Prompt Builder</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-video"></i> Veo 3 Prompt Builder</h1>
+            <p>Stwórz szczegółowy prompt do generowania wideo AI</p>
+        </header>
+
+        <div class="form-container">
+            <form id="promptForm">
+                <!-- Podstawowe informacje -->
+                <div class="section">
+                    <h2><i class="fas fa-info-circle"></i> Podstawowe informacje</h2>
+                    
+                    <div class="form-group">
+                        <label for="idea">💡 Twój pomysł na wideo</label>
+                        <textarea id="idea" placeholder="Opisz ogólny pomysł, np. 'Szef kuchni prezentuje nowe danie w eleganckiej restauracji'" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="duration">⏱️ Długość (sekundy)</label>
+                            <input type="number" id="duration" min="1" max="8" value="8" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="aspect_ratio">📐 Proporcje</label>
+                            <select id="aspect_ratio" required>
+                                <option value="16:9">16:9 (standardowe)</option>
+                                <option value="9:16">9:16 (pionowe/mobile)</option>
+                                <option value="2.35:1">2.35:1 (kinowe)</option>
+                                <option value="4:3">4:3 (klasyczne)</option>
+                                <option value="1:1">1:1 (kwadratowe)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Postać -->
+                <div class="section">
+                    <h2><i class="fas fa-user"></i> Postać główna</h2>
+                    
+                    <div class="form-group">
+                        <label for="character_name">👤 Imię/nazwa postaci</label>
+                        <input type="text" id="character_name" placeholder="np. Maria, Chef Antonio, Narratorka" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="character_age">🎂 Wiek</label>
+                            <input type="number" id="character_age" min="1" max="100" placeholder="25" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="character_height">📏 Wzrost</label>
+                            <input type="text" id="character_height" placeholder="5'8\" / 173 cm" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="character_description">👥 Opis wyglądu</label>
+                        <textarea id="character_description" placeholder="np. Młoda kobieta o atletycznej budowie, długie brązowe włosy, ciepły uśmiech, pewna siebie postawa" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="character_outfit">👗 Ubiór</label>
+                        <input type="text" id="character_outfit" placeholder="np. Biały fartuch szefa kuchni, czarne spodnie, profesjonalne buty" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="character_demeanour">😊 Charakter/nastrój</label>
+                        <input type="text" id="character_demeanour" placeholder="np. Pewna siebie, entuzjastyczna, profesjonalna" required>
+                    </div>
+                </div>
+
+                <!-- Scena -->
+                <div class="section">
+                    <h2><i class="fas fa-map-marker-alt"></i> Miejsce i sceneria</h2>
+                    
+                    <div class="form-group">
+                        <label for="location">🏢 Lokalizacja</label>
+                        <input type="text" id="location" placeholder="np. Nowoczesna kuchnia restauracyjna z widokiem na miasto" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time_of_day">🌅 Pora dnia</label>
+                        <select id="time_of_day" required>
+                            <option value="mid-day">Południe</option>
+                            <option value="golden hour just before sunset">Złota godzina</option>
+                            <option value="blue hour twilight">Niebieska godzina</option>
+                            <option value="early morning with soft dawn light">Wczesny ranek</option>
+                            <option value="dead of night with only moonlight">Noc</option>
+                            <option value="overcast afternoon">Pochmurne popołudnie</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="environment">🌿 Szczegóły otoczenia</label>
+                        <textarea id="environment" placeholder="np. Błyszczące stalowe powierzchnie, para unosząca się z garnków, miękkie światło z okien" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Akcja -->
+                <div class="section">
+                    <h2><i class="fas fa-running"></i> Akcja i ruch</h2>
+                    
+                    <div class="form-group">
+                        <label for="action">🎭 Co robi postać</label>
+                        <textarea id="action" placeholder="np. Delikatnie układa składniki na talerzu, uśmiecha się do kamery i gestykuluje wskazując na danie" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="props">🎯 Rekwizyty (opcjonalne)</label>
+                        <input type="text" id="props" placeholder="np. Elegancki biały talerz, świeże zioła, stalowe przybory kuchenne">
+                    </div>
+                </div>
+
+                <!-- Kamera -->
+                <div class="section">
+                    <h2><i class="fas fa-camera"></i> Ujęcie i kamera</h2>
+                    
+                    <div class="form-group">
+                        <label for="composition">📹 Kompozycja kadru</label>
+                        <select id="composition" required>
+                            <option value="Medium close-up, 35mm lens, deep focus">Zbliżenie średnie (35mm)</option>
+                            <option value="Wide shot, 24mm lens, establishing shot">Ujęcie ogólne (24mm)</option>
+                            <option value="Close-up, 85mm lens, shallow depth of field">Zbliżenie (85mm)</option>
+                            <option value="Extreme wide shot, 14mm lens, drone perspective">Ujęcie bardzo szerokie (14mm)</option>
+                            <option value="Over-the-shoulder shot, 50mm lens">Ujęcie zza ramienia (50mm)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="camera_motion">🎥 Ruch kamery (opcjonalne)</label>
+                        <select id="camera_motion">
+                            <option value="">Brak ruchu (statyczna)</option>
+                            <option value="slow dolly-in 60 cm">Powolny najazd</option>
+                            <option value="smooth tracking shot following the subject">Podążanie za obiektem</option>
+                            <option value="gentle pan from left to right">Panoramowanie poziome</option>
+                            <option value="smooth crane movement from low to high">Ruch dźwigowy</option>
+                            <option value="handheld with slight natural movement">Ręczna z naturalnym ruchem</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="camera_equipment">📷 Sprzęt/styl</label>
+                        <select id="camera_equipment" required>
+                            <option value="smooth gimbal 35mm">Gimbal z obiektywem 35mm</option>
+                            <option value="RED camera on Steadicam rig">Kamera RED na Steadicam</option>
+                            <option value="handheld iPhone with cinematic lens">iPhone z obiektywem kinowym</option>
+                            <option value="vintage 16mm film camera">Vintage kamera 16mm</option>
+                            <option value="professional cinema camera setup">Profesjonalny setup kinowy</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Oświetlenie i styl -->
+                <div class="section">
+                    <h2><i class="fas fa-lightbulb"></i> Oświetlenie i atmosfera</h2>
+                    
+                    <div class="form-group">
+                        <label for="lighting">💡 Oświetlenie</label>
+                        <select id="lighting" required>
+                            <option value="soft natural window light">Miękkie naturalne światło z okna</option>
+                            <option value="professional studio lighting setup">Profesjonalne oświetlenie studyjne</option>
+                            <option value="warm kitchen ambient lighting">Ciepłe światło kuchenne</option>
+                            <option value="dramatic chiaroscuro lighting">Dramatyczne światłocienie</option>
+                            <option value="bright daylight with soft shadows">Jasne światło dzienne z miękkimi cieniami</option>
+                            <option value="golden hour backlighting">Podświetlenie złotej godziny</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tone">🎨 Nastrój</label>
+                        <select id="tone" required>
+                            <option value="warm, professional, inviting">Ciepły, profesjonalny, zachęcający</option>
+                            <option value="vibrant, energetic, dynamic">Żywy, energiczny, dynamiczny</option>
+                            <option value="elegant, sophisticated, refined">Elegancki, wyrafinowany</option>
+                            <option value="cozy, intimate, homely">Przytulny, intymny, domowy</option>
+                            <option value="modern, clean, minimalist">Nowoczesny, czysty, minimalistyczny</option>
+                            <option value="rustic, authentic, traditional">Rustykalny, autentyczny, tradycyjny</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="color_grade">🌈 Kolorystyka</label>
+                        <select id="color_grade" required>
+                            <option value="warm, golden tones">Ciepłe, złote tony</option>
+                            <option value="natural, true-to-life colors">Naturalne, wierne kolory</option>
+                            <option value="high contrast with rich saturation">Wysoki kontrast z bogatym nasyceniem</option>
+                            <option value="soft, muted pastels">Miękkie, stonowane pastele</option>
+                            <option value="cool, modern blue tones">Chłodne, nowoczesne niebieskie tony</option>
+                            <option value="vintage film look with slight grain">Vintage z lekkim ziarnem</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Dialog -->
+                <div class="section">
+                    <h2><i class="fas fa-comments"></i> Dialog i dźwięk</h2>
+                    
+                    <div class="form-group">
+                        <label for="dialogue">💬 Dialog (obowiązkowy)</label>
+                        <textarea id="dialogue" placeholder="np. 'To jest moja autorska interpretacja klasycznego risotto - każdy składnik ma swoją historię!'" required></textarea>
+                        <small>Veo 3 wymaga dialogu w każdym wideo</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="audio_style">🎵 Styl audio (opcjonalne)</label>
+                        <input type="text" id="audio_style" placeholder="np. Delikatna muzyka jazzowa w tle, szelest garnków, brzęk sztućców">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="voice_emotion">🎭 Emocja głosu</label>
+                        <select id="voice_emotion" required>
+                            <option value="confident, passionate">Pewny siebie, pełen pasji</option>
+                            <option value="warm, friendly, approachable">Ciepły, przyjazny, dostępny</option>
+                            <option value="professional, authoritative">Profesjonalny, autorytatywny</option>
+                            <option value="enthusiastic, energetic">Entuzjastyczny, energiczny</option>
+                            <option value="calm, soothing, gentle">Spokojny, kojący, delikatny</option>
+                            <option value="mysterious, intriguing">Tajemniczy, intrygujący</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Przyciski -->
+                <div class="button-group">
+                    <button type="button" id="generateBtn" class="btn-primary">
+                        <i class="fas fa-magic"></i> Generuj JSON
+                    </button>
+                    <button type="button" id="clearBtn" class="btn-secondary">
+                        <i class="fas fa-eraser"></i> Wyczyść
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Wyniki -->
+        <div id="results" class="results-container" style="display: none;">
+            <h2><i class="fas fa-code"></i> Wygenerowany JSON</h2>
+            <div class="result-section">
+                <div class="copy-header">
+                    <h3>📋 JSON do skopiowania:</h3>
+                    <button id="copyJsonBtn" class="btn-copy">
+                        <i class="fas fa-copy"></i> Kopiuj JSON
+                    </button>
+                </div>
+                <pre id="jsonOutput"></pre>
+            </div>
+
+            <div class="result-section">
+                <div class="copy-header">
+                    <h3>🤖 Prompt dla LLM:</h3>
+                    <button id="copyPromptBtn" class="btn-copy">
+                        <i class="fas fa-copy"></i> Kopiuj Prompt
+                    </button>
+                </div>
+                <div id="llmPrompt" class="llm-prompt"></div>
+            </div>
+
+            <div class="result-section">
+                <h3>🎯 Gotowy prompt naturalny:</h3>
+                <div id="naturalPrompt" class="natural-prompt"></div>
+            </div>
+        </div>
+
+        <!-- Instrukcje -->
+        <div class="instructions">
+            <h2><i class="fas fa-question-circle"></i> Jak używać?</h2>
+            <ol>
+                <li><strong>Wypełnij formularz</strong> - Wprowadź szczegóły swojego wideo</li>
+                <li><strong>Kliknij "Generuj JSON"</strong> - System utworzy strukturalne dane</li>
+                <li><strong>Skopiuj JSON + Prompt</strong> - Wklej do ChatGPT/Claude/Gemini</li>
+                <li><strong>Poproś o ulepszenie</strong> - LLM stworzy lepszy prompt</li>
+                <li><strong>Użyj w Veo 3</strong> - Wklej finalny prompt w Google AI Studio</li>
+            </ol>
+        </div>
+    </div>
+
+    <footer>
+        <p>🎬 Veo 3 Prompt Builder | Stworzony dla twórców wideo AI</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
